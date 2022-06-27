@@ -1,5 +1,6 @@
 const { User } = require("../../models");
 const createError = require("http-errors");
+const gravatar = require("gravatar");
 
 const signup = async (req, res) => {
   const { email, password, subscription = "starter" } = req.body;
@@ -8,7 +9,9 @@ const signup = async (req, res) => {
     throw createError(409, `Email ${email} in use. Conflict`);
   }
 
-  const newUser = new User({ email, password, subscription });
+  const avatarURL = gravatar.url(email);
+
+  const newUser = new User({ email, password, subscription, avatarURL });
   newUser.setPassword(password);
   newUser.save();
 
@@ -19,6 +22,7 @@ const signup = async (req, res) => {
       user: {
         email,
         subscription,
+        avatarURL,
       },
     },
   });
