@@ -4,6 +4,7 @@ const {
   validation,
   controllerWrapper,
   signupUser,
+  upload,
 } = require("../../middlewares");
 const { signup: controllers } = require("../../controllers");
 const {
@@ -34,6 +35,13 @@ router.patch(
   signupUser,
   validation(userSubscriptionSchemaJoi),
   controllerWrapper(controllers.updateSubscription)
+);
+
+router.patch(
+  "/avatars",
+  signupUser,
+  upload.single("avatar"),
+  controllerWrapper(controllers.updateAvatar)
 );
 
 module.exports = router;
