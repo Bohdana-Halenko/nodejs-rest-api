@@ -8,8 +8,11 @@ const login = async (req, res) => {
   const { email, password, subscription = "starter" } = req.body;
   const user = await User.findOne({ email });
 
-  if (!user || !user.comparePassword(password)) {
-    throw createError(401, `Email or password is wrong. Unauthorized`);
+  if (!user || !user.verify || !user.comparePassword(password)) {
+    throw createError(
+      401,
+      `Email or password is wrong of email not verify. Unauthorized`
+    );
   }
 
   const payload = {
